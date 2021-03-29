@@ -6,8 +6,8 @@
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        <TextBox x:Name="textBox1" HorizontalAlignment="Left" Height="23" Margin="228,30,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="153"/>
+    <Grid Initialized="CursesUpdate">
+        <TextBox x:Name="textBox1" HorizontalAlignment="Left" Height="23" Margin="228,30,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="153"/>
         <Label Content="Введите сумму для перевода:" HorizontalAlignment="Left" Margin="13,24,0,0" VerticalAlignment="Top" Width="235" FontSize="14" RenderTransformOrigin="0.863,0.353" Height="31"/>
         <ListBox x:Name="listBox1" HorizontalAlignment="Left" Height="121" Margin="86,92,0,0" VerticalAlignment="Top" Width="140" >
             <TextBlock FontWeight="Bold" TextDecorations="Underline" Text="Валюта" />
