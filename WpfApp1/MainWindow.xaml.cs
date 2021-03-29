@@ -65,14 +65,14 @@ namespace WpfApp1
         {
             InitializeComponent();
             listBox1.SelectedIndex = 0;
-            listBox2.SelectedIndex = 1;
-      
+            listBox2.SelectedIndex = 1;      
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             //строка для запроса
-            GetRateById(298);
+            //GetRateById(298);
+            GetRateByName("RUB");
 
         }
 
