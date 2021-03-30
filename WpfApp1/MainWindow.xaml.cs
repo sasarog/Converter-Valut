@@ -59,10 +59,13 @@ namespace WpfApp1
             MessageBox.Show(rate.Cur_Abbreviation.ToString());
             return rate;
         }
-        void GetRateByName(string name)
+        int GetIDByName(string name)
         {
             List<Currency> currencies = GetCurrencyList();
-            
+            //Predicate<Currency> m = delegate (Currency x) { return x.Cur_Abbreviation == "RUS"; };
+            int index = currencies.FindIndex((x) => x.Cur_Abbreviation == "RUB");
+            MessageBox.Show(index.ToString());
+            return currencies[index].Cur_ID;
             
         }
 
