@@ -31,14 +31,8 @@ namespace WpfApp1
         {
             String url = "https://www.nbrb.by/api/exrates/currencies";
             //объект, который будет соединяться с сайтом
-            System.Net.WebClient client = new System.Net.WebClient();
-            //объект для десериализации строки (дешифратор)
-            JavaScriptSerializer serializer = new JavaScriptSerializer();
-            //Строка в формате json
-            //{"Cur_ID":298,"Date":"2021-03-18T00:00:00","Cur_Abbreviation":"RUB
-            String json = client.DownloadString(url);
-            //преобразование строки в объект класса Rate
-            //Rate izChego = serializer.Deserialize<Rate>(json);
+            System.Net.WebClient client = new System.Net.WebClient();           
+            String json = client.DownloadString(url);            
             List<Currency> currency = new List<Currency>();
             currency = JsonConvert.DeserializeObject<List<Currency>>(json);
             return currency;
@@ -56,17 +50,13 @@ namespace WpfApp1
             String json = client.DownloadString(url);
             //преобразование строки в объект класса Rate
             Rate rate = serializer.Deserialize<Rate>(json);
-            MessageBox.Show(rate.Cur_Abbreviation.ToString());
+            //MessageBox.Show(rate.Cur_Abbreviation.ToString());
             return rate;
         }
         int GetIDByName(string name)
         {
             List<Currency> currencies = GetCurrencyList();
-            //Predicate<Currency> m = delegate (Currency x) { return x.Cur_Abbreviation == "RUS"; };
-            int index = currencies.FindIndex((x) => x.Cur_Abbreviation == "RUB");
-            MessageBox.Show(index.ToString());
-            return currencies[index].Cur_ID;
-            
+            return currencies.FindLast((x) => x.Cur_Abbreviation == name).Cur_ID;
         }
 
         public MainWindow()
@@ -78,11 +68,70 @@ namespace WpfApp1
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            //строка для запроса
-            //GetRateById(298);
-            GetRateByName("RUB");
+            int indexOfIshValuta, indexOfKonValuta;
+            double otnKRublu = 0, otnOtRubla = 0, rubli; 
+            if (listBox1.SelectedIndex == 0 || listBox2.SelectedIndex == 0)
+            {
+                MessageBox.Show("Вы не выбрали валюту.");
+                return;
+            }
+            indexOfIshValuta = listBox1.SelectedIndex;
+            indexOfKonValuta= listBox2.SelectedIndex;
+            Rate rateof, rateTo = new Rate();
+            switch (indexOfIshValuta)
+            {
+                case 1:
+                    otnKRublu = 1;
+                    break;
+                case 2:
+                    rateof = GetRateById(GetIDByName("USD"));
+                    otnKRublu = rateof.Cur_OfficialRate / rateof.Cur_Scale;
+                    break; 
+                case 3:
+                    rateof = GetRateById(GetIDByName("EUR"));
+                    otnKRublu = rateof.Cur_OfficialRate / rateof.Cur_Scale;
+                    break; 
+                case 4:
+                    rateof = GetRateById(GetIDByName("PLN"));
+                    otnKRublu = rateof.Cur_OfficialRate / rateof.Cur_Scale;
+                    break; 
+                case 5:
+                    rateof = GetRateById(GetIDByName("RUB"));
+                    otnKRublu = rateof.Cur_OfficialRate / rateof.Cur_Scale;
+                    break;
+                default:
+                    break;
+            }
+            
+            switch (indexOfKonValuta)
+            {
+                case 1:
+                    otnOtRubla = 1;
+                    break;
+                case 2:
+                    rateTo = GetRateById(GetIDByName("USD"));
+                    otnOtRubla = rateTo.Cur_OfficialRate / rateTo.Cur_Scale;
+                    break;
+                case 3:
+                    rateTo = GetRateById(GetIDByName("EUR"));
+                    otnOtRubla = rateTo.Cur_OfficialRate / rateTo.Cur_Scale;
+                    break;
+                case 4:
+                    rateTo = GetRateById(GetIDByName("PLN"));
+                    otnOtRubla = rateTo.Cur_OfficialRate / rateTo.Cur_Scale;
+                    break;
+                case 5:
+                    rateTo = GetRateById(GetIDByName("RUB"));
+                    otnOtRubla = rateTo.Cur_OfficialRate / rateTo.Cur_Scale;
+                    break;
+                default:
+                    break;
+            }
+            rubli = Convert.ToDouble(textBox1.Text) * otnKRublu/otnOtRubla;
+            textBox2.Text = rubli.ToString();
 
         }
+
 
         private void CursesUpdate(object sender, EventArgs e)
         {
