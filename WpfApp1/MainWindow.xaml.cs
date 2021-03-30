@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -26,6 +27,23 @@ namespace WpfApp1
     /// </summary>
     public partial class MainWindow : Window 
     {
+        List<Currency> GetCurrencyList()
+        {
+            String url = "https://www.nbrb.by/api/exrates/currencies";
+            //объект, который будет соединяться с сайтом
+            System.Net.WebClient client = new System.Net.WebClient();
+            //объект для десериализации строки (дешифратор)
+            JavaScriptSerializer serializer = new JavaScriptSerializer();
+            //Строка в формате json
+            //{"Cur_ID":298,"Date":"2021-03-18T00:00:00","Cur_Abbreviation":"RUB
+            String json = client.DownloadString(url);
+            //преобразование строки в объект класса Rate
+            //Rate izChego = serializer.Deserialize<Rate>(json);
+            List<Currency> currency = new List<Currency>();
+            currency = JsonConvert.DeserializeObject<List<Currency>>(json);
+            return currency;
+        }
+
         Rate GetRateById(int id)
         {
             String url = "https://www.nbrb.by/api/exrates/Rates/" + Convert.ToString(id);
@@ -43,22 +61,9 @@ namespace WpfApp1
         }
         void GetRateByName(string name)
         {
-            String url = "https://www.nbrb.by/api/exrates/currencies";
-            //объект, который будет соединяться с сайтом
-            System.Net.WebClient client = new System.Net.WebClient();
-            //объект для десериализации строки (дешифратор)
-            JavaScriptSerializer serializer = new JavaScriptSerializer();
-            //Строка в формате json
-            //{"Cur_ID":298,"Date":"2021-03-18T00:00:00","Cur_Abbreviation":"RUB
-            String json = client.DownloadString(url);
-            //преобразование строки в объект класса Rate
-            //Rate izChego = serializer.Deserialize<Rate>(json);
-            List <Currency> currency = new List<Currency>();
-            //Currency c = serializer.Deserialize<Currency>(json);
-
-            // currency.Add( serializer.Deserialize<Currency>(json));
-            MessageBox.Show(currency.Capacity.ToString());
-            //return currency.First<Currency>;
+            List<Currency> currencies = GetCurrencyList();
+            
+            
         }
 
         public MainWindow()
