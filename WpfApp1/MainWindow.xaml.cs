@@ -127,7 +127,7 @@ namespace WpfApp1
                 default:
                     break;
             }
-            rubli = Convert.ToDouble(textBox1.Text) * otnKRublu/otnOtRubla;
+            rubli = Convert.ToDouble(textBox1.Text) * otnKRublu / otnOtRubla;
             textBox2.Text = rubli.ToString();
 
         }
